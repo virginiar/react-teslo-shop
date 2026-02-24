@@ -1,21 +1,22 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-
+import type { Gender, Size } from "@/interfaces/product.interface";
 
 interface ProductCardProps {
   id: string;
   name: string;
   price: number;
   image: string;
-  category: string;
+  category: Gender;
+  sizes: Size[]
 }
 
 export const ProductCard = ({
-  id,
   name,
   price,
   image,
   category,
+  sizes,
 }: ProductCardProps) => {
   console.log(image);
   return (
@@ -34,7 +35,7 @@ export const ProductCard = ({
           <div className="space-y-1">
             <h3 className="font-medium text-sm tracking-tight">{name}</h3>
             <p className="text-xs text-muted-foreground uppercase">
-              {category}
+              {category} - <span className="font-bold">{sizes.join(", ")}</span>
             </p>
           </div>
 
