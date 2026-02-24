@@ -44,11 +44,11 @@ En este proyecto genera una Single Page Application y se analizan los siguientes
 
 ## Instalación y ejecución del proyecto
 
-Descargar las dependencias con `npm install`.
-
-Crear archivo `.env` con las variables de entorno indicadas en `.env.template`.
-
-Iniciar la aplicación con `npm run dev`.
+1. Clonar el repositorio
+2. Descargar las dependencias con `npm install`.
+3. Crear archivo `.env` con las variables de entorno indicadas en `.env.template`.
+4. Verificar que el backend esté corriendo en el puerto 3000
+5. Iniciar la aplicación con `npm run dev`.
 
 ## Instalaciones de paquetes necesarios
 
