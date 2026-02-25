@@ -1,4 +1,5 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { useState, type SubmitEvent } from "react";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -6,13 +7,39 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 import { CustomLogo } from "@/components/custom/CustomLogo";
+import { loginAction } from "@/auth/actions/login.action";
+import { toast } from "sonner";
 
 export const LoginPage = () => {
+  const navigate = useNavigate();
+  const [isPosting, setIsPosting] = useState(false);
+
+  const handleLogin = async (event: SubmitEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsPosting(true);
+
+    const formData = new FormData(event.target as HTMLFormElement);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
+    try {
+      const data = await loginAction(email, password);
+      localStorage.setItem("token", data.token);
+      console.log("redireccionando al home");
+      navigate("/");
+    } catch (error) {
+      //console.log(error);
+      toast.error("Correo y/o contraseña no válidos");
+    }
+
+    setIsPosting(false);
+  };
+
   return (
     <div className={"flex flex-col gap-6"}>
       <Card className="overflow-hidden p-0  ">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8">
+          <form className="p-6 md:p-8" onSubmit={handleLogin}>
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
                 <CustomLogo />
@@ -25,6 +52,7 @@ export const LoginPage = () => {
                 <Label htmlFor="email">Correo</Label>
                 <Input
                   id="email"
+                  name="email"
                   type="email"
                   placeholder="mail@google.com"
                   required
@@ -42,12 +70,13 @@ export const LoginPage = () => {
                 </div>
                 <Input
                   id="password"
+                  name="password"
                   type="password"
                   required
                   placeholder="Contraseña"
                 />
               </div>
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full" disabled={isPosting}>
                 Iniciar sesión
               </Button>
               <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
