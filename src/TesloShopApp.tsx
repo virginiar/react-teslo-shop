@@ -1,6 +1,6 @@
 import { RouterProvider } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Toaster } from 'sonner';
+import { Toaster } from "sonner";
 
 import { appRouter } from "./app.router";
 
@@ -10,7 +10,7 @@ export const TesloShopApp = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <Toaster />
-      <RouterProvider router={appRouter} />;
+      <RouterProvider router={appRouter} />
     </QueryClientProvider>
   );
 };
