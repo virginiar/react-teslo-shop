@@ -3,6 +3,7 @@ import type { User } from '@/interfaces/user.interface';
 
 import { loginAction } from '../actions/login.action';
 import { checkAuthAction } from '../actions/check-auth.actions';
+import { registerAction } from '../actions/register.action';
 
 type AuthStatus = 'authenticated' | 'not-authenticated' | 'checking';
 
@@ -19,6 +20,7 @@ type AuthStore = {
     login: (email: string, password: string) => Promise<boolean>;
     logout: () => void;
     checkAuthStatus: () => Promise<boolean>;
+    register: (fullName: string, email: string, password: string) => Promise<boolean>;
 };
 
 export const useAuthStore = create<AuthStore>()((set, get) => ({
@@ -77,6 +79,25 @@ export const useAuthStore = create<AuthStore>()((set, get) => ({
                 authStatus: 'not-authenticated',
             });
 
+            return false;
+        }
+    },
+
+    register: async (fullName: string, email: string, password: string) => {
+        // console.log({ fullName, email, password });
+
+        try {
+            const data = await registerAction(fullName, email, password);
+            localStorage.setItem('token', data.token);
+
+            set({ user: data.user, token: data.token, authStatus: 'authenticated' });
+
+            return true;
+
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (error) {
+            localStorage.removeItem('token');
+            set({ user: null, token: null, authStatus: 'not-authenticated' });
             return false;
         }
     },
