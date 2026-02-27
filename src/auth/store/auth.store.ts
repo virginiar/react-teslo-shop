@@ -13,7 +13,7 @@ type AuthStore = {
     authStatus: AuthStatus;
 
     // Getters
-
+    isAdmin: () => boolean;
 
     // Acciones
     login: (email: string, password: string) => Promise<boolean>;
@@ -21,15 +21,22 @@ type AuthStore = {
     checkAuthStatus: () => Promise<boolean>;
 };
 
-export const useAuthStore = create<AuthStore>()((set) => ({
+export const useAuthStore = create<AuthStore>()((set, get) => ({
     // Implementación de AuthStore
     user: null,
     token: null,
     authStatus: 'checking',
     
+    // Getters
+    isAdmin: () => {
+        const roles = get().user?.roles || [];
+        return roles.includes('admin');
+        // return !!get().user?.roles.includes('admin');
+    },
+
     // Acciones
     login: async (email: string, password: string) => {
-        console.log({ email, password });
+        // console.log({ email, password });
 
         try {
             const data = await loginAction(email, password);
