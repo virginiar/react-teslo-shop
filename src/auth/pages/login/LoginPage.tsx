@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router";
 import { useState, type SubmitEvent } from "react";
+import { toast } from "sonner";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -7,11 +8,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 import { CustomLogo } from "@/components/custom/CustomLogo";
-import { loginAction } from "@/auth/actions/login.action";
-import { toast } from "sonner";
+import { useAuthStore } from "@/auth/store/auth.store";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
+  const { login } = useAuthStore();
   const [isPosting, setIsPosting] = useState(false);
 
   const handleLogin = async (event: SubmitEvent<HTMLFormElement>) => {
@@ -22,16 +23,12 @@ export const LoginPage = () => {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
-    try {
-      const data = await loginAction(email, password);
-      localStorage.setItem("token", data.token);
-      console.log("redireccionando al home");
+    const isValid = await login(email, password);
+    if (isValid) {
       navigate("/");
-    } catch (error) {
-      //console.log(error);
-      toast.error("Correo y/o contraseña no válidos");
+      return;
     }
-
+    toast.error("Correo y/o contraseña no válidos");
     setIsPosting(false);
   };
 
