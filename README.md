@@ -16,6 +16,8 @@ Como gestores de estado se utiliza [TanStack Query](https://tanstack.com/query/l
 
 Los toast están creados con [Sonner](https://sonner.emilkowal.ski/).
 
+Los formularios se gestionan con [React Hook Form](https://react-hook-form.com/).
+
 ## Aspectos analizados
 
 En este proyecto genera una Single Page Application y se analizan los siguientes puntos:
@@ -36,7 +38,7 @@ En este proyecto genera una Single Page Application y se analizan los siguientes
 - Protección de rutas
 - Autorización de rutas
 - Filtros de productos
-- Formularios
+- Formularios con useForm de React Hook Form
 - Validaciones
 - TanStack mutation
 - Invalidar caché
@@ -90,4 +92,9 @@ npm install zustand
 Para instalar Sonner:
 ```bash
 npm install sonner
+```
+
+Para instalar React Hook Form:
+```bash
+npm install react-hook-form
 ```

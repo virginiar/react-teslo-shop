@@ -1,12 +1,13 @@
 import { Link } from "react-router";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { X, SaveAll, Tag, Plus, Upload } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
 import { AdminTitle } from "@/admin/components/AdminTitle";
 import type { Product } from "@/interfaces/product.interface";
-
+import { cn } from "@/lib/utils";
 
 interface Props {
   title: string;
@@ -18,8 +19,21 @@ const availableSizes = ["XXS", "XS", "S", "M", "L", "XL", "XXL", "XXXL"];
 
 export const ProductForm = ({ title, subtitle, product }: Props) => {
   console.log(product);
-  
+
   const [dragActive, setDragActive] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: product,
+  });
+
+  // TODO: eliminar en un futuro
+  const onSubmit = (productLike: Product) => {
+    console.log("onSubmit", productLike);
+  };
 
   const addTag = () => {
     // if (newTag.trim() && !product.tags.includes(newTag.trim())) {
@@ -78,7 +92,7 @@ export const ProductForm = ({ title, subtitle, product }: Props) => {
   };
 
   return (
-    <>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex justify-between items-center">
         <AdminTitle title={title} subtitle={subtitle} />
         <div className="flex justify-end mb-10 gap-4">
@@ -113,11 +127,22 @@ export const ProductForm = ({ title, subtitle, product }: Props) => {
                   </label>
                   <input
                     type="text"
-                    // value={product.title}
-                    // onChange={(e) => handleInputChange("title", e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                    {...register("title", {
+                      required: true, 
+                    })}
+                    className={cn(
+                      "w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200",
+                      {
+                        "border-red-500": errors.title,
+                      },
+                    )}
                     placeholder="Título del producto"
                   />
+                  {errors.title && (
+                    <p className="text-red-500 text-sm">
+                      El título es requerido
+                    </p>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -127,10 +152,7 @@ export const ProductForm = ({ title, subtitle, product }: Props) => {
                     </label>
                     <input
                       type="number"
-                      // value={product.price}
-                      // onChange={(e) =>
-                      //   handleInputChange("price", parseFloat(e.target.value))
-                      // }
+                      {...register("price")}
                       className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                       placeholder="Precio del producto"
                     />
@@ -142,10 +164,7 @@ export const ProductForm = ({ title, subtitle, product }: Props) => {
                     </label>
                     <input
                       type="number"
-                      //   value={product.stock}
-                      //   onChange={(e) =>
-                      //     handleInputChange("stock", parseInt(e.target.value))
-                      //   }
+                      {...register("stock")}
                       className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                       placeholder="Stock del producto"
                     />
@@ -158,8 +177,7 @@ export const ProductForm = ({ title, subtitle, product }: Props) => {
                   </label>
                   <input
                     type="text"
-                    // value={product.slug}
-                    // onChange={(e) => handleInputChange("slug", e.target.value)}
+                    {...register("slug")}
                     className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                     placeholder="Slug del producto"
                   />
@@ -170,10 +188,7 @@ export const ProductForm = ({ title, subtitle, product }: Props) => {
                     Género del producto
                   </label>
                   <select
-                    // value={product.gender}
-                    // onChange={(e) =>
-                    //   handleInputChange("gender", e.target.value)
-                    // }
+                    {...register("gender")}
                     className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   >
                     <option value="men">Hombre</option>
@@ -188,10 +203,7 @@ export const ProductForm = ({ title, subtitle, product }: Props) => {
                     Descripción del producto
                   </label>
                   <textarea
-                    // value={product.description}
-                    // onChange={(e) =>
-                    //   handleInputChange("description", e.target.value)
-                    // }
+                    {...register("description")}
                     rows={5}
                     className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none"
                     placeholder="Descripción del producto"
@@ -418,6 +430,6 @@ export const ProductForm = ({ title, subtitle, product }: Props) => {
           </div>
         </div>
       </div>
-    </>
+    </form>
   );
-};
+};;
