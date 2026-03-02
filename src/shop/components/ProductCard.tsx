@@ -18,7 +18,7 @@ export const ProductCard = ({
   category,
   sizes,
 }: ProductCardProps) => {
-  console.log(image);
+  // console.log(image);
   return (
     <Card className="group border-0 shadow-none product-card-hover cursor-pointer">
       <CardContent className="p-0">
