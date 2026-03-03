@@ -6,7 +6,12 @@ import { ProductForm } from "./ui/ProductForm";
 
 export const AdminProductPage = () => {
   const { id } = useParams();
-  const { isLoading, isError, data: product } = useProduct(id || "");
+  const {
+    isLoading,
+    isError,
+    data: product,
+    handleSubmitForm,
+  } = useProduct(id || "");
   // console.log(isLoading, product);
 
   const title = id === "new" ? "Nuevo producto" : "Editar producto";
@@ -18,7 +23,7 @@ export const AdminProductPage = () => {
   if (isError) {
     return <Navigate to="/admin/products" />;
   }
-  
+
   if (isLoading) {
     return <CustomFullScreenLoading />;
   }
@@ -27,5 +32,5 @@ export const AdminProductPage = () => {
     return <Navigate to="/admin/products" />;
   }
 
-  return <ProductForm title={title} subtitle={subtitle} product={product} />;
+  return <ProductForm title={title} subtitle={subtitle} product={product} onSubmit={handleSubmitForm}/>;
 };

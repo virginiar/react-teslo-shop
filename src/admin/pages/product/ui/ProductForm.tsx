@@ -10,15 +10,18 @@ import { AdminTitle } from "@/admin/components/AdminTitle";
 import type { Product, Size } from "@/interfaces/product.interface";
 
 interface Props {
+  // Propiedades
   title: string;
   subtitle: string;
   product: Product;
+  // Métodos
+  onSubmit: (productLike: Partial<Product>) => Promise<void>;
 }
 
 const availableSizes: Size[] = ["XS", "S", "M", "L", "XL", "XXL"];
 
-export const ProductForm = ({ title, subtitle, product }: Props) => {
-  console.log(product);
+export const ProductForm = ({ title, subtitle, product, onSubmit }: Props) => {
+  // console.log(product);
 
   const [dragActive, setDragActive] = useState(false);
 
@@ -48,11 +51,6 @@ export const ProductForm = ({ title, subtitle, product }: Props) => {
     name: "stock",
   });
 
-  // TODO: eliminar en un futuro
-  const onSubmit = (productLike: Product) => {
-    console.log("onSubmit", productLike);
-  };
-
   const addTag = () => {
     const newTag = labelInputRef.current!.value;
     if (newTag === "") return;
@@ -63,9 +61,9 @@ export const ProductForm = ({ title, subtitle, product }: Props) => {
   };
 
   const removeTag = (tag: string) => {
-    const newTagSet = new Set(getValues('tags'));
+    const newTagSet = new Set(getValues("tags"));
     newTagSet.delete(tag);
-    setValue('tags', Array.from(newTagSet));
+    setValue("tags", Array.from(newTagSet));
   };
 
   const addSize = (size: Size) => {
