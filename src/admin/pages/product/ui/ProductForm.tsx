@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { X, SaveAll, Tag, Plus, Upload } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -28,12 +28,15 @@ export const ProductForm = ({ title, subtitle, product }: Props) => {
     formState: { errors },
     getValues,
     setValue,
-    watch,
+    control,
   } = useForm({
     defaultValues: product,
   });
 
-  const selectedSizes = watch("sizes");
+  const selectedSizes = useWatch({
+    control,
+    name: "sizes",
+  });
 
   // TODO: eliminar en un futuro
   const onSubmit = (productLike: Product) => {
@@ -59,6 +62,7 @@ export const ProductForm = ({ title, subtitle, product }: Props) => {
 
   const addSize = (size: Size) => {
     const sizeSet = new Set(getValues("sizes"));
+    console.log(sizeSet);
     sizeSet.add(size);
     setValue("sizes", Array.from(sizeSet));
   };
