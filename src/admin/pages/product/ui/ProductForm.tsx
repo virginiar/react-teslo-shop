@@ -14,13 +14,20 @@ interface Props {
   title: string;
   subtitle: string;
   product: Product;
+  isPending: boolean;
   // Métodos
   onSubmit: (productLike: Partial<Product>) => Promise<void>;
 }
 
 const availableSizes: Size[] = ["XS", "S", "M", "L", "XL", "XXL"];
 
-export const ProductForm = ({ title, subtitle, product, onSubmit }: Props) => {
+export const ProductForm = ({
+  title,
+  subtitle,
+  product,
+  onSubmit,
+  isPending,
+}: Props) => {
   // console.log(product);
 
   const [dragActive, setDragActive] = useState(false);
@@ -106,14 +113,14 @@ export const ProductForm = ({ title, subtitle, product, onSubmit }: Props) => {
       <div className="flex justify-between items-center">
         <AdminTitle title={title} subtitle={subtitle} />
         <div className="flex justify-end mb-10 gap-4">
-          <Button variant="outline">
+          <Button variant="outline" type="button">
             <Link to="/admin/products" className="flex items-center gap-2">
               <X className="w-4 h-4" />
               Cancelar
             </Link>
           </Button>
 
-          <Button>
+          <Button type="submit" disabled={isPending}>
             <SaveAll className="w-4 h-4" />
             Guardar cambios
           </Button>
