@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useEffectEvent, useRef, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { X, SaveAll, Tag, Plus, Upload } from "lucide-react";
 
@@ -39,9 +39,12 @@ export const ProductForm = ({
   const [dragActive, setDragActive] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
 
-  useEffect(() => {
+  const updatingFiles = useEffectEvent(() => {
     setFiles([]);
-  }, [product]);
+  });
+  useEffect(() => {
+    updatingFiles()
+  }, [product])
 
   const {
     register,
